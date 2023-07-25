@@ -26,24 +26,19 @@ map.on('load', function () {
             'data': 'data/covid_data.geojson'
         },
         'paint': {
-            'circle-color': ['interpolate', ['linear'], ['get', 'ENTRIES_DIFF'],
-                -1, '#ff4400',
-                -0.7, '#ffba31',
-                -0.4,  '#ffffff'
-            ],
+            'circle-color': '#ff4400',
             'circle-stroke-color': '#4d4d4d',
             'circle-stroke-width': 0.5,
-            'circle-radius': ['interpolate', ['exponential', 2], ['zoom'],
-                10, ['interpolate', ['linear'], ['get', 'ENTRIES_DIFF'],
-                    -1, 10,
-                    -0.4, 1
-                ],
-                15, ['interpolate', ['linear'], ['get', 'ENTRIES_DIFF'],
-                    -1, 25,
-                    -0.4, 12
-                ]]
+            'circle-radius': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                10, ['*', 0.05, ['to-number', ['get', 'nyc covid data by zip code  - nyc virus cases - nycases_zip_Positive tests']]],
+                15, ['*', 0.1, ['to-number', ['get', 'nyc covid data by zip code  - nyc virus cases - nycases_zip_Positive tests']]]
+            ]
         }
     }, firstSymbolId);
+    
 
     map.on('click', 'covid_data', function (e) {
         let zipcode = e.features[0].properties.modzcta;
